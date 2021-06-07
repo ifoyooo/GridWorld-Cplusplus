@@ -30,7 +30,7 @@ class Grid:
                 for j in range(3):
                     if i == 0 and j == 2:
                         continue
-                    mmax = -10000
+                    mmax = -np.infty
                     for k in range(4):
                         newmax = self.r[i, j, k]+gamma*(0.8*self.v[max(0, min(2, i+self.dx[k])), max(0, min(2, j+self.dy[k]))]+0.1*self.v[max(0, min(2, i+self.dx[(
                             k+1) % 4])), max(0, min(2, j+self.dy[(k+1) % 4]))]+0.1*self.v[max(0, min(2, i+self.dx[(k-1) % 4])), max(0, min(2, j+self.dy[(k-1) % 4]))])
@@ -39,7 +39,7 @@ class Grid:
                     self.v[i, j] = mmax
         return cnt
 
-    def __call__(self):
+    def __call__(self,gamma):
         for i in range(3):
             for j in range(3):
                 print(self.v[i, j], end=' ')
@@ -50,8 +50,8 @@ class Grid:
         for i in range(3):
             for j in range(3):
                 for k in range(4):
-                    ans[i, j, k] = 0.8*self.v[max(0, min(2, i+self.dx[k])), max(0, min(2, j+self.dy[k]))]+0.1*self.v[max(0, min(2, i+self.dx[(
-                            k+1) % 4])), max(0, min(2, j+self.dy[(k+1) % 4]))]+0.1*self.v[max(0, min(2, i+self.dx[(k-1) % 4])), max(0, min(2, j+self.dy[(k-1) % 4]))]
+                    ans[i, j, k] = self.r[i,j,k]+gamma*(0.8*self.v[max(0, min(2, i+self.dx[k])), max(0, min(2, j+self.dy[k]))]+0.1*self.v[max(0, min(2, i+self.dx[(
+                            k+1) % 4])), max(0, min(2, j+self.dy[(k+1) % 4]))]+0.1*self.v[max(0, min(2, i+self.dx[(k-1) % 4])), max(0, min(2, j+self.dy[(k-1) % 4]))])
         for i in range(3):
             for j in range(3):
                 if i == 0 and j == 2:
@@ -65,16 +65,16 @@ if __name__ == "__main__":
     g100 = Grid(100)
     cnt = g100.train(0.99)
     print("g100 cnt =", cnt)
-    g100()
+    g100(0.99)
     g3 = Grid(3)
     cnt = g3.train(0.99)
     print("g3 cnt=", cnt)
-    g3()
+    g3(0.99)
     g0 = Grid(0)
     cnt = g0.train(0.99)
     print("g0 cnt=", cnt)
-    g0()
+    g0(0.99)
     gn3 = Grid(-3)
     cnt = gn3.train(0.99)
     print("gn3 cnt=", cnt)
-    gn3()
+    gn3(0.99)
