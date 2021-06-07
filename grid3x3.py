@@ -2,16 +2,16 @@ import numpy as np
 
 class Grid:
     def __init__(self,r):
-        #left,down,right,up\n
         self.dx=np.array([-1,0,1,0])
         self.dy=np.array([0,-1,0,1])
+        self.draw=['l','d','r','u']
         self.rewards=np.array([[r,-1,10],[-1,-1,-1],[-1,-1,-1]])
         self.v=np.zeros((3,3))
         self.r=np.zeros((3,3,4))
         for i in range(3):
             for j in range(3):
                 for k in range(4):
-                    self.r[i,j,k]+=0.8*self.rewards[max(0,min(2,i+self.dx[k])),max(0,min(2,self.dy[k]))]
+                    self.r[i,j,k]+=0.8*self.rewards[max(0,min(2,i+self.dx[k])),max(0,min(2,j+self.dy[k]))]
                     self.r[i,j,k]+=0.1*self.rewards[max(0,min(2,i+self.dx[(k+1)%4])),max(0,min(2,j+self.dy[(k+1)%4]))]
                     self.r[i,j,k]+=0.1*self.rewards[max(0,min(2,i+self.dx[(k-1)%4])),max(0,min(2,j+self.dy[(k-1)%4]))]
     def train(self,gamma):
@@ -30,14 +30,22 @@ class Grid:
                         if mmax<newmax:
                             mmax=newmax
                     self.v[i,j]=mmax
-            # print(self.v)
-            # print(lastv)
         return cnt
     def __call__(self):
         for i in range(3):
             for j in range(3):
                 print(self.v[i,j],end=' ')
             print()
+        ans=np.zeros((3,3,4))
+        for i in range(3):
+            for j in range(3):
+                for k in range(4):
+                    ans[i,j,k]=self.v[max(0,min(2,i+self.dx[k])),max(0,min(2,j+self.dy[k]))]
+        for i in range(3):
+            for j in range(3):
+                print(self.draw[np.argmax(ans[i,j])],end=' ')
+            print()
+
 
 
 if __name__=="__main__":
