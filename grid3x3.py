@@ -30,7 +30,6 @@ class Grid:
                         if mmax<newmax:
                             mmax=newmax
                     self.v[i,j]=mmax
-            #为什么会不断变大呢？
             # print(self.v)
             # print(lastv)
         return cnt
