@@ -1,5 +1,10 @@
 import numpy as np
+import argparse
 
+from numpy.core.fromnumeric import argmax
+
+__author__="ifoyooo"
+__email__="wangfuyun_000@foxmail.com"
 
 class Grid:
     def __init__(self, r, g):
@@ -60,7 +65,7 @@ class Grid:
             print()
 
 
-if __name__ == "__main__":
+def test1():
     g100 = Grid(100, 0.99)
     cnt = g100.train(0.001)
     print("g100 cnt =", cnt)
@@ -77,3 +82,20 @@ if __name__ == "__main__":
     cnt = gn3.train(0.001)
     print("gn3 cnt =", cnt)
     gn3()
+
+def test2():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--r",help="rewards",nargs="+",type=float,default=[100,3,0,-3])
+    parser.add_argument("--gamma",help="gamma",nargs="+",type=float,default=[0.99]*4)
+    parser.add_argument("--epsilon",help="epsilon",type=int,default=0.001)
+    args=parser.parse_args()
+    assert len(args.r)==len(args.gamma)
+    for i in range(len(args.r)):
+        g=Grid(args.r[i],args.gamma[i])
+        cnt=g.train(args.epsilon)
+        print("grid3x3: reward =",args.r[i]," gamma =",args.gamma[i],"epsilon =",args.epsilon)
+        g()
+
+
+if __name__ == "__main__":
+    test2()
